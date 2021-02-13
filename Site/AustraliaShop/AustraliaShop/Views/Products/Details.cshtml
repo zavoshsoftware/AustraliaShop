@@ -1,0 +1,432 @@
+﻿@model ViewModels.ProductDetailViewModel
+
+@{
+		ViewBag.title = Model.Product.PageTitle;
+		Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+}
+@section head{
+	<style>
+		.displaynone {
+			display: none;
+		}
+	</style>
+}
+<div class="breadcrumb_section bg_gray page-title-mini">
+	<div class="container">
+		<!-- STRART CONTAINER -->
+		<div class="row align-items-center">
+			<div class="col-md-6">
+				<div class="page-title">
+					<h1>@Model.Product.Title</h1>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<ol class="breadcrumb justify-content-md-end">
+					<li class="breadcrumb-item"><a href="/">Home</a></li>
+
+					@foreach (var breadcrumbItem in Model.BreadcrumbItems)
+					{
+							<li class="breadcrumb-item"><a href="/category/@breadcrumbItem.UrlParam">@breadcrumbItem.Title</a></li>
+					}
+					<li class="breadcrumb-item active">@Model.Product.Title</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="main_content">
+
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6 col-md-6 mb-4 mb-md-0">
+					<div class="product-image">
+						<div class="product_img_box">
+							<img id="product_img" src='@Model.Product.ImageUrl' data-zoom-image="@Model.Product.ImageUrl" alt="@Model.Product.Title" />
+							<a href="#" class="product_img_zoom" title="Zoom">
+								<span class="linearicons-zoom-in"></span>
+							</a>
+						</div>
+						<div id="pr_item_gallery" class="product_gallery_item slick_slider" data-slides-to-show="4" data-slides-to-scroll="1" data-infinite="false">
+							<div class="item">
+								<a href="#" class="product_gallery_item active" data-image="@Model.Product.ImageUrl" data-zoom-image="@Model.Product.ImageUrl">
+									<img src="@Model.Product.ImageUrl" alt="product_small_img1" />
+								</a>
+							</div>
+							@foreach (var productImage in Model.ProductImages)
+							{
+
+									<div class="item">
+										<a href="#" class="product_gallery_item" data-image="@productImage.ImageUrl" data-zoom-image="@productImage.ImageUrl">
+											<img src="@productImage.ImageUrl" alt="@productImage.Alt" />
+										</a>
+									</div>
+							}
+
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					<div class="pr_detail">
+						<div class="product_description">
+							<h4 class="product_title"><a href="#">@Model.Product.Title</a></h4>
+							<div class="product_price">
+								@if (Model.Product.IsInPromotion)
+								{
+										<span class="price">$@Model.Product.DiscountAmount</span>
+										<del>$@Model.Product.Amount</del>
+										@*<div class="on_sale">
+												<span>35% Off</span>
+											</div>*@
+								}
+								else
+								{
+										<span class="price">$@Model.Product.Amount</span>
+
+								}
+							</div>
+							<div class="rating_wrap">
+								<div class="rating">
+									<div class="product_rate" style="width:80%"></div>
+								</div>
+								<span class="rating_num">(@Model.CommentQty)</span>
+							</div>
+							<div class="clearfix"></div>
+
+							<div class="pr_desc">
+								<p>@Model.Product.Summery</p>
+							</div>
+							<div class="clearfix"></div>
+							<div class="product_sort_info">
+								<ul>
+									<li><i class="linearicons-shield-check"></i> 1 Year Warranty</li>
+									<li><i class="linearicons-sync"></i> 30 Day Return Policy</li>
+									<li><i class="linearicons-bag-dollar"></i> Cash on Delivery available</li>
+								</ul>
+							</div>
+
+							<div class="pr_switch_wrap">
+								<span class="switch_lable">Color</span>
+								<div class="product_color_switch">
+									@{
+											int i = 0;
+
+											foreach (var childProduct in Model.ChildProducts)
+											{
+												if (i == 0)
+												{
+															<span class="active" data-color="#@childProduct.Product.Color.HexCode" onclick="changeSizeitem('@childProduct.Product.Id');"></span>
+}
+												else
+												{
+															<span data-color="#@childProduct.Product.Color.HexCode" onclick="changeSizeitem('@childProduct.Product.Id');"></span>
+}
+												i++;
+											}
+									}
+								</div>
+							</div>
+
+
+							<div class="pr_switch_wrap">
+								<span class="switch_lable">Size</span>
+								@{
+										int j = 0;
+									foreach (var childProduct in Model.ChildProducts)
+									{
+										if (j == 0)
+										{
+											<div class="product_size_switch" id="@childProduct.Product.Id">
+												@foreach (var productSize in childProduct.ProductSizes)
+												{
+													<span data-value="@Model.Product.Code/@productSize.Id">@productSize.Size.Title</span>
+												}
+											</div>
+										}
+										else
+										{
+											<div class="product_size_switch displaynone" id="@childProduct.Product.Id">
+												@foreach (var productSize in childProduct.ProductSizes)
+												{
+													<span data-value="@Model.Product.Code/@productSize.Id">@productSize.Size.Title</span>
+												}
+											</div>
+										}
+										j++;
+									}
+								}
+					 
+							</div>
+
+						</div>
+						<hr />
+						<div class="cart_extra">
+							<div class="cart-product-quantity">
+								<div class="quantity">
+
+									<input type="text" name="quantity" id="basketQty" value="1" title="Qty" class="qty" size="4">
+
+								</div>
+							</div>
+							<div class="cart_btn">
+								<button class="btn btn-fill-out btn-addtocart" onclick="addToBasket('@Model.Product.Code', 'detail');" type="button"><i class="icon-basket-loaded"></i> Add to cart</button>
+
+								<a class="add_wishlist" href="#"><i class="icon-heart"></i></a>
+							</div>
+						</div>
+						<hr />
+						<ul class="product-meta">
+							<li>Category: <a href="/category/@Model.ProductGroup.UrlParam" target="_blank">@Model.ProductGroup.Title</a></li>
+							<li>Visit: <a href="#" rel="tag">@Model.Product.Visit</a> </li>
+						</ul>
+
+						<div class="product_share">
+							<span>Share:</span>
+							<ul class="social_icons">
+								<li><a href="#"><i class="ion-social-facebook"></i></a></li>
+								<li><a href="#"><i class="ion-social-twitter"></i></a></li>
+								<li><a href="#"><i class="ion-social-googleplus"></i></a></li>
+								<li><a href="#"><i class="ion-social-youtube-outline"></i></a></li>
+								<li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<div class="large_divider clearfix"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<div class="tab-style3">
+						<ul class="nav nav-tabs" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" id="Description-tab" data-toggle="tab" href="#Description" role="tab" aria-controls="Description" aria-selected="true">Description</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="Reviews-tab" data-toggle="tab" href="#Reviews" role="tab" aria-controls="Reviews" aria-selected="false">Reviews (@Model.CommentQty)</a>
+							</li>
+						</ul>
+						<div class="tab-content shop_info_tab">
+							<div class="tab-pane fade show active" id="Description" role="tabpanel" aria-labelledby="Description-tab">
+								@Html.Raw(Model.Product.Body)
+							</div>
+
+							<div class="tab-pane fade" id="Reviews" role="tabpanel" aria-labelledby="Reviews-tab">
+								<div class="comments">
+									<h5 class="product_tab_title">@Model.CommentQty Review For <span>Blue Dress For Woman</span></h5>
+									<ul class="list_none comment_list mt-4">
+										@foreach (var comment in Model.ProductComments)
+										{
+
+												<li>
+													<div class="comment_img">
+														<img src="/assets/images/avatar.png" alt="" />
+													</div>
+													<div class="comment_block">
+														<div class="rating_wrap">
+															<div class="rating">
+																@if (comment.Rate != 0)
+																{
+																	if (comment.Rate == 1)
+																	{
+																				<div class="product_rate" style="width: 20%"></div>
+
+																	}
+																	else if (comment.Rate == 2)
+																	{
+																				<div class="product_rate" style="width: 40%"></div>
+
+																	}
+
+																	else if (comment.Rate == 3)
+																	{
+																				<div class="product_rate" style="width: 60%"></div>
+
+																	}
+
+																	else if (comment.Rate == 4)
+																	{
+																				<div class="product_rate" style="width: 80%"></div>
+
+																	}
+
+																	else if (comment.Rate == 5)
+																	{
+																				<div class="product_rate" style="width: 100%"></div>
+
+																	}
+																}
+																@*<div class="product_rate" style="width: 60%"></div>*@
+
+															</div>
+														</div>
+														<p class="customer_meta">
+															<span class="review_author">@comment.Name</span>
+															<span class="comment-date">@comment.CreationDate</span>
+														</p>
+														<div class="description">
+															<p>@comment.Message</p>
+														</div>
+													</div>
+												</li>
+
+										}
+
+
+									</ul>
+								</div>
+								<div class="review_form field_form">
+									<h5>Add a review</h5>
+									<div class="row mt-3">
+										<div class="form-group col-12">
+											<div class="star_rating">
+												<span data-value="1_@Model.Product.Id"><i class="far fa-star"></i></span>
+												<span data-value="2_@Model.Product.Id"><i class="far fa-star"></i></span>
+												<span data-value="3_@Model.Product.Id"><i class="far fa-star"></i></span>
+												<span data-value="4_@Model.Product.Id"><i class="far fa-star"></i></span>
+												<span data-value="5_@Model.Product.Id"><i class="far fa-star"></i></span>
+											</div>
+										</div>
+										<div class="form-group col-12">
+											<textarea required="required" placeholder="Your review *" class="form-control" id="message" rows="4"></textarea>
+										</div>
+										<div class="form-group col-md-6">
+											<input required="required" placeholder="Enter Name *" class="form-control" id="name" type="text">
+										</div>
+										<div class="form-group col-md-6">
+											<input required="required" placeholder="Enter Email *" class="form-control" id="email" type="email">
+										</div>
+
+										<div class="form-group col-12">
+											<button type="button" onclick="SubmitComment('@Model.Product.Id')" class="btn btn-fill-out">Submit Review</button>
+										</div>
+										<div class="form-group">
+											<div class="alert alert-danger" id="errorDiv"></div>
+											<div class="alert alert-success" id="SuccessDiv">thanks, your comment submited succesfully and preview after admin confirmation.</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<div class="small_divider"></div>
+					<div class="divider"></div>
+					<div class="medium_divider"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<div class="heading_s1">
+						<h3>Releted Products</h3>
+					</div>
+					<div class="releted_product_slider carousel_slider owl-carousel owl-theme" data-margin="20" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
+
+						@foreach (var product in Model.RelatedProducts)
+						{
+								<div class="item">
+									<div class="product">
+										<div class="product_img">
+											<a href="/product/@product.Code">
+												<img src="@product.ImageUrl" alt="@product.Title">
+											</a>
+
+										</div>
+										<div class="product_info">
+											<h6 class="product_title"><a href="/product/@product.Code">@product.Title</a></h6>
+											<div class="product_price">
+												@if (product.IsInPromotion)
+												{
+														<span class="price">$@product.DiscountAmount</span>
+														<del>$@product.Amount</del>
+														@*<div class="on_sale">
+																<span>35% Off</span>
+															</div>*@
+}
+												else
+												{
+														<span class="price">$@product.Amount</span>
+
+												}
+											</div>
+											<div class="rating_wrap">
+												<div class="rating">
+													<div class="product_rate" style="width: 80%"></div>
+												</div>
+												@*<span class="rating_num">(@product.CommentCount)</span>*@
+											</div>
+											<div class="pr_desc">
+												<p>@product.Summery</p>
+											</div>
+
+										</div>
+									</div>
+								</div>
+						}
+
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END SECTION SHOP -->
+	<!-- START SECTION SUBSCRIBE NEWSLETTER -->
+	<div class="section bg_default small_pt small_pb">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-md-6">
+					<div class="heading_s1 mb-md-0 heading_light">
+						<h3>Subscribe Our Newsletter</h3>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="newsletter_form">
+						<form>
+							<input type="text" required="" class="form-control rounded-0" placeholder="Enter Email Address">
+							<button type="submit" class="btn btn-dark rounded-0" name="submit" value="Submit">Subscribe</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+@section scripts{
+
+	<script src="~/Scripts/function.js"></script>
+
+	<script>
+		$('.star_rating span').click(function () {
+			var val = $(this).attr("data-value");
+
+			setCookie('review', val, 1);
+
+		});
+		$('.product_size_switch span').click(function () {
+			var val = $(this).attr("data-value");
+
+			setCookie('sizecookie', val, 1);
+
+		});
+
+		$(document).ready(function () {
+			removeCookie('sizecookie');
+		});
+
+		function changeSizeitem(id) {
+			$('.product_size_switch').addClass('displaynone');
+			$('#' + id).removeClass('displaynone');
+		}
+	</script>
+}

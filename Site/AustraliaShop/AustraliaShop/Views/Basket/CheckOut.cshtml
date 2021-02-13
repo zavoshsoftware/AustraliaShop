@@ -1,0 +1,249 @@
+﻿@model ViewModels.CheckOutViewModel
+
+@{
+    ViewBag.Title = "checkout";
+    Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+}
+
+<div class="breadcrumb_section bg_gray page-title-mini">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-md-6">
+				<div class="page-title">
+					<h1>Checkout</h1>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<ol class="breadcrumb justify-content-md-end">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item active">Checkout</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="main_content">
+
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+			
+					@if (Model.UserInformation.IsAuthenticate)
+					{
+						<div class="toggle_info">
+							<span><i class="fas fa-user"></i>Wellcome @Model.UserInformation.FullName, Please complete form below </span>
+						</div>
+					}
+					else
+					{
+						<div class="toggle_info">
+							<span><i class="fas fa-user"></i>Returning customer? <a href="#loginform" data-toggle="collapse" class="collapsed" aria-expanded="false">Click here to login</a></span>
+						</div>
+						<div class="panel-collapse collapse login_form" id="loginform">
+							<div class="panel-body">
+								<p>If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the Billing &amp; Shipping section.</p>
+								<div >
+									<div class="form-group">
+										<input type="text" required="" class="form-control" id="loginEmail" placeholder="Email">
+									</div>
+									<div class="form-group">
+										<input class="form-control" required="" type="password" id="loginPassword" placeholder="Password">
+									</div>
+									<div class="login_footer form-group">
+										<div class="chek-form">
+											<div class="custome-checkbox input-group-append">
+												<input class="form-check-input" type="checkbox" name="checkbox" id="remember" value="">
+												<label class="form-check-label" for="remember"><span>Remember me</span></label>
+											</div>
+										</div>
+										<a href="/forgetpassword">Forgot password?</a>
+									</div>
+									<div class="form-group">
+										<button type="button" onclick="LoginInCheckout();" class="btn btn-fill-out btn-block" name="login">Log in</button>
+									</div>
+									<div id="danger-alert-login" class="alert alert-danger">
+							
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+
+				</div>
+				<div class="col-lg-6">
+					<div class="toggle_info">
+						<span><i class="fas fa-tag"></i>Have a coupon? <a href="#couponbox" data-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
+					</div>
+					<div class="panel-collapse collapse coupon_form" id="couponbox">
+						<div class="panel-body">
+							<p>If you have a coupon code, please apply it below.</p>
+							<div class="coupon field_form input-group">
+								<input type="text" id="coupon" value="" class="form-control" placeholder="Enter Coupon Code..">
+								<div class="input-group-append">
+									<button class="btn btn-fill-out btn-sm" type="button" onclick="addDiscountCode();">Apply Coupon</button>
+								</div>
+								
+							
+							</div>
+							<div>
+								<div class="alert alert-danger" id="errorDiv-discount"></div>
+								<div class="alert alert-success" id="SuccessDiv-discount">your coupon submited successfully.</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<div class="medium_divider"></div>
+					<div class="divider center_icon"><i class="linearicons-credit-card"></i></div>
+					<div class="medium_divider"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="heading_s1">
+						<h4>Billing Details</h4>
+					</div>
+					<div >
+						<div class="form-group">
+							<input type="text" required class="form-control" value="@Model.UserInformation.FullName" id="fullname" placeholder="Fullname *">
+						</div> 
+					 
+						<div class="form-group">
+							<div class="custom_select">
+								<select id="ddlCountry" class="form-control">	
+									<option value="0">Select Country</option>
+
+									@foreach (var country in Model.Countries)
+									{
+											<option value="@country.Id">@country.Title</option>
+									}
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" id="billing_address" required="" placeholder="Address *">
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" id="billing_address2" required="" placeholder="Address line2">
+						</div>
+						<div class="form-group">
+							<input class="form-control" required type="text" id="city" placeholder="City / Town">
+						</div>
+						<div class="form-group">
+							<input class="form-control" required type="text" id="state" placeholder="State / County">
+						</div>
+						<div class="form-group">
+							<input class="form-control" required type="text" id="zipcode" placeholder="Postcode / ZIP ">
+						</div>
+						<div class="form-group">
+							<input class="form-control" required type="text" id="cellnumber" value="@Model.UserInformation.CellNumber" placeholder="Phone">
+						</div>
+						<div class="form-group">
+							<input class="form-control" required type="text" id="email" value="@Model.UserInformation.Email" placeholder="Email address *">
+						</div>
+					@if (!Model.IsAuthenticate)
+					{
+						<div class="form-group">
+							<div class="chek-form">
+								<div class="custome-checkbox">
+									<input class="form-check-input"  type="checkbox" name="createaccount" id="createaccount">
+									<label class="form-check-label label_info" for="createaccount"><span>Create an account?</span></label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group create-account">
+							<input class="form-control" required type="password" placeholder="Password" name="password" id="password">
+						</div>
+					}
+						<div class="heading_s1">
+							<h4>Additional information</h4>
+						</div>
+						<div class="form-group mb-0">
+							<textarea rows="5" id="note" class="form-control" placeholder="Order notes"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="order_review">
+						<div class="heading_s1">
+							<h4>Your Orders</h4>
+						</div>
+						<div class="table-responsive order_table">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Product</th>
+										<th>Total</th>
+									</tr>
+								</thead>
+								<tbody>
+								@foreach (var product in Model.Products)
+								{
+									<tr>
+										<td>@product.Product.Title <span class="product-qty">x @product.Quantity</span></td>
+										<td>@product.RowAmount</td>
+									</tr>
+								}
+						
+						 
+								</tbody>
+								<tfoot>
+									<tr>
+										<th>SubTotal</th>
+										<td class="product-subtotal">$@Model.SubTotal</td>
+									</tr>
+									<tr>
+										<th>Discount</th>
+										<td>$@Model.DiscountAmount</td>
+									</tr>
+									<tr>
+										<th>Total</th>
+										<td class="product-subtotal">$@Model.Total</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					 
+						<button type="button" onclick="finalizeOrder();" href="#" class="btn btn-fill-out btn-block">Place Order And Pay</button>
+						<div id="error-box" class="alert alert-danger"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END SECTION SHOP -->
+	<!-- START SECTION SUBSCRIBE NEWSLETTER -->
+	<div class="section bg_default small_pt small_pb">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-md-6">
+					<div class="heading_s1 mb-md-0 heading_light">
+						<h3>Subscribe Our Newsletter</h3>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="newsletter_form">
+						<form>
+							<input type="text" required="" class="form-control rounded-0" placeholder="Enter Email Address">
+							<button type="submit" class="btn btn-dark rounded-0" name="submit" value="Submit">Subscribe</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- START SECTION SUBSCRIBE NEWSLETTER -->
+
+</div>
+
+@section scripts{
+<script src="~/Scripts/function.js"></script>
+}
+
+
+@section head{
+	<link href="~/assets/css/checkout-style.css" rel="stylesheet" />
+}

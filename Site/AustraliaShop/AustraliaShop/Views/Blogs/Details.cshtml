@@ -1,0 +1,219 @@
+﻿@model ViewModels.BlogDetailViewModel
+
+@{
+		ViewBag.Title = Model.Blog.Title;
+		Layout = "~/Views/Shared/FrontEnd/_FronEndLayout.cshtml";
+}
+<div class="breadcrumb_section bg_gray page-title-mini">
+	<div class="container">
+		<!-- STRART CONTAINER -->
+		<div class="row align-items-center">
+			<div class="col-md-6">
+				<div class="page-title">
+					<h1>@Model.Blog.Title</h1>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<ol class="breadcrumb justify-content-md-end">
+					<li class="breadcrumb-item"><a href="/">home</a></li>
+					<li class="breadcrumb-item"><a href="/blog/@Model.Blog.BlogGroup.UrlParam">@Model.Blog.BlogGroup.Title</a></li>
+					<li class="breadcrumb-item active">@Model.Blog.Title</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="main_content">
+
+	<div class="section">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-9">
+					<div class="blog-detail-area">
+						<div class="single_post">
+							<h2 class="blog_title">@Model.Blog.Title</h2>
+							<ul class="list_none blog_meta">
+								<li><a href="#"><i class="ti-calendar"></i> @Model.Blog.CreationDate</a></li>
+								<li><a href="#"><i class="ti-comments"></i> @Model.Blog.Visit View</a></li>
+							</ul>
+							<div class="blog_img">
+								<img src="@Model.Blog.ImageUrl" alt="@Model.Blog.Title">
+							</div>
+							<div class="blog_content">
+								<div class="blog_text">
+									@Html.Raw(Model.Blog.Body)
+								</div>
+							</div>
+						</div>
+
+
+						<div class="related_post">
+							<div class="content_title">
+								<h5>Related Posts</h5>
+							</div>
+							<div class="row">
+								@foreach (var blog in Model.RelatedBlog)
+								{
+										<div class="col-md-6">
+											<div class="blog_post blog_style2 box_shadow1">
+												<div class="blog_img">
+													<a href="/blog/post/@blog.UrlParam">
+														<img src="@blog.ImageUrl" alt="@blog.Title">
+													</a>
+												</div>
+												<div class="blog_content bg-white">
+													<div class="blog_text">
+														<h5 class="blog_title"><a href="/blog/post/@blog.UrlParam">@blog.Title</a></h5>
+														<ul class="list_none blog_meta">
+															<li><a href="#"><i class="ti-calendar"></i> @blog.CreationDateStr</a></li>
+															<li><a href="#"><i class="ti-comments"></i> @blog.CommentCount comments</a></li>
+														</ul>
+														<p>@blog.Summery</p>
+													</div>
+												</div>
+											</div>
+										</div>
+								}
+
+
+							</div>
+						</div>
+						<div class="comment-area">
+							<div class="content_title">
+								<h5>(@Model.BlogComments.Count) comments</h5>
+							</div>
+							<ul class="list_none comment_list">
+								@foreach (var comment in Model.BlogComments)
+								{
+										<li class="comment_info">
+											<div class="d-flex">
+												<div class="comment_user">
+													<img src="assets/images/user2.jpg" alt="user2">
+												</div>
+												<div class="comment_content">
+													<div class="d-flex">
+														<div class="meta_data">
+															<h6><a href="#">@comment.Name</a></h6>
+															<div class="comment-time">@comment.CreationDate</div>
+														</div>
+
+													</div>
+													<p>@comment.Message</p>
+												</div>
+											</div>
+											@if (!string.IsNullOrEmpty(comment.Response))
+											{
+
+
+													<ul class="children">
+														<li class="comment_info">
+															<div class="d-flex">
+																<div class="comment_user">
+																	<img src="assets/images/user3.jpg" alt="user3">
+																</div>
+																<div class="comment_content">
+																	<div class="d-flex align-items-md-center">
+																		<div class="meta_data">
+																			<h6><a href="#">babakShop</a></h6>
+																			<div class="comment-time">@comment.CreationDate</div>
+																		</div>
+																		<div class="ml-auto">
+																			<a href="#" class="comment-reply"><i class="ion-reply-all"></i>Reply</a>
+																		</div>
+																	</div>
+																	<p>@comment.Response</p>
+																</div>
+															</div>
+														</li>
+													</ul>
+}
+										</li>
+								}
+
+
+							</ul>
+							<div class="content_title">
+								<h5>submit your comment</h5>
+							</div>
+							<div class="field_form">
+								<div class="row">
+									<div class="form-group col-md-6">
+										<input id="name" class="form-control" placeholder="Name*" required="required" type="text">
+									</div>
+									<div class="form-group col-md-6">
+										<input id="email" class="form-control" placeholder="Email*" required="required" type="email">
+									</div>
+
+									<div class="form-group col-md-12">
+										<textarea rows="3" id="message" class="form-control" placeholder="Your comment*" required="required"></textarea>
+									</div>
+									<div class="form-group col-md-12">
+										<button   class="btn btn-fill-out" onclick="SubmitBlogComment('@Model.Blog.Id');" type="button">Submit</button>
+									</div>
+									<div class="form-group col-md-12 mt-1">
+										<p class="alert alert-danger" id="errorDivBlog"></p>
+										<p class="alert alert-success" id="SuccessDivBlog">Tanks. Your comment submited successfully</p>
+									</div>
+							
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-3 order-xl-first mt-4 pt-2 mt-xl-0 pt-xl-0">
+					<div class="sidebar blog-detail-sidebar">
+
+						<div class="widget">
+							<h5 class="widget_title">Newest posts</h5>
+							<ul class="widget_recent_post">
+
+								@foreach (var blog in Model.SidebarBlogs)
+								{
+
+										<li>
+											<div class="post_footer">
+												<div class="post_img">
+													<a href="/blog/post/@blog.UrlParam"><img src="@blog.ImageUrl" alt="@blog.Title"></a>
+												</div>
+												<div class="post_content">
+													<h6><a href="/blog/post/@blog.UrlParam">@blog.Title</a></h6>
+													<p class="small m-0">@blog.CreationDateStr</p>
+												</div>
+											</div>
+										</li>
+								}
+
+							</ul>
+						</div>
+						<div class="widget">
+							<h5 class="widget_title">Blog Groups</h5>
+							<ul class="widget_archive">
+								@foreach (var blogGroup in Model.SidebarBlogGroups)
+								{
+										<li><a href="/blog/@blogGroup.UrlParam"><span class="archive_year">@blogGroup.Title</span><span class="archive_num">(@blogGroup.BlogCount)</span></a></li>
+
+								}
+
+							</ul>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+@section scripts{
+	<script src="~/Scripts/function.js"></script>
+}
+@section head{
+	<style>
+		#SuccessDivBlog, #errorDivBlog {
+			display: none;
+		}
+	</style>
+}

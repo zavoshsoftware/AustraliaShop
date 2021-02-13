@@ -1,0 +1,75 @@
+﻿@model Models.ProductImage
+
+@{
+    ViewBag.Title = "Delete " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>Are you sure for delete this record?</h3>
+<div>    
+    <hr />
+    <div class="form-horizontal">        
+    
+         <div class="form-group">
+            @Html.LabelFor(model => model.Product.Title, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Product.Title)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.Order, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Order)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.ImageUrl, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.ImageUrl)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.AltText, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.AltText)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.IsActive)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.CreationDate, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.CreationDate)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.LastModifiedDate, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.LastModifiedDate)
+      </div></div>
+
+         <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DisplayFor(model => model.Description)
+      </div></div>
+
+  </div>  
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+       <div class="form-group" id="buttons">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Delete" class="btn btn-primary" />
+				@Html.ActionLink("Return to list", "Index")
+            </div>
+        </div>
+    }
+</div>

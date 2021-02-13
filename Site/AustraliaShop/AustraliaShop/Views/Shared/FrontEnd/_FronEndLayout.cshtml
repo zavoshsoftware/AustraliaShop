@@ -1,0 +1,156 @@
+﻿ 
+@{
+		Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- SITE TITLE -->
+	<title>shopping</title>
+	<!-- Favicon Icon -->
+	<link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.png">
+	<!-- Animation CSS -->
+	<link rel="stylesheet" href="/assets/css/animate.css">
+	<!-- Latest Bootstrap min CSS -->
+	<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+	<!-- Icon Font CSS -->
+	<link rel="stylesheet" href="/assets/css/all.min.css">
+	<link rel="stylesheet" href="/assets/css/ionicons.min.css">
+	<link rel="stylesheet" href="/assets/css/themify-icons.css">
+	<link rel="stylesheet" href="/assets/css/linearicons.css">
+	<link rel="stylesheet" href="/assets/css/flaticon.css">
+	<link rel="stylesheet" href="/assets/css/simple-line-icons.css">
+	<!--- owl carousel CSS-->
+	<link rel="stylesheet" href="/assets/owlcarousel/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/assets/owlcarousel/css/owl.theme.css">
+	<link rel="stylesheet" href="/assets/owlcarousel/css/owl.theme.default.min.css">
+	<!-- Magnific Popup CSS -->
+	<link rel="stylesheet" href="/assets/css/magnific-popup.css">
+	<!-- Slick CSS -->
+	<link rel="stylesheet" href="/assets/css/slick.css">
+	<link rel="stylesheet" href="/assets/css/slick-theme.css">
+	<!-- Style CSS -->
+	<link rel="stylesheet" href="/assets/css/style.css">
+	<link rel="stylesheet" href="/assets/css/responsive.css">
+	@RenderSection("head", required: false)
+
+</head>
+
+<body>
+
+	<div class="preloader">
+		<div class="lds-ellipsis">
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+	</div>
+	@*<div class="modal fade subscribe_popup" id="onload-popup" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true"><i class="ion-ios-close-empty"></i></span>
+					</button>
+					<div class="row no-gutters">
+
+						<div class="col-sm-5">
+							<div class="background_bg h-100" data-img-src="/assets/images/popup_img.jpg"></div>
+						</div>
+
+						<div class="col-sm-7">
+							<div class="popup_content text-left">
+								<div class="popup-text">
+									<div class="heading_s1">
+										<h3>Subscribe Newsletter and Get 25% Discount!</h3>
+									</div>
+									<p>Subscribe to the newsletter to receive updates about new products.</p>
+								</div>
+								<form method="post">
+									<div class="form-group">
+										<input name="email" required type="email" class="form-control" placeholder="Enter Your Email">
+									</div>
+									<div class="form-group">
+										<button class="btn btn-fill-out btn-block text-uppercase" title="Subscribe" type="submit">Subscribe</button>
+									</div>
+								</form>
+								<div class="chek-form">
+									<div class="custome-checkbox">
+										<input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox3" value="">
+										<label class="form-check-label" for="exampleCheckbox3"><span>Don't show this popup again!</span></label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>*@
+	@Html.Partial("FrontEnd/_MenuPartial")
+	@RenderBody()
+	@Html.Partial("FrontEnd/_FooterPartial")
+	
+<a href="#" class="scrollup" style="display: none;"><i class="ion-ios-arrow-up"></i></a>
+
+<!-- Latest jQuery -->
+<script src="/assets/js/jquery-1.12.4.min.js"></script>
+<!-- popper min js -->
+<script src="/assets/js/popper.min.js"></script>
+<!-- Latest compiled and minified Bootstrap -->
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<!-- owl-carousel min js  -->
+<script src="/assets/owlcarousel/js/owl.carousel.min.js"></script>
+<!-- magnific-popup min js  -->
+<script src="/assets/js/magnific-popup.min.js"></script>
+<!-- waypoints min js  -->
+<script src="/assets/js/waypoints.min.js"></script>
+<!-- parallax js  -->
+<script src="/assets/js/parallax.js"></script>
+<!-- countdown js  -->
+<script src="/assets/js/jquery.countdown.min.js"></script>
+<!-- imagesloaded js -->
+<script src="/assets/js/imagesloaded.pkgd.min.js"></script>
+<!-- isotope min js -->
+<script src="/assets/js/isotope.min.js"></script>
+<!-- jquery.dd.min js -->
+<script src="/assets/js/jquery.dd.min.js"></script>
+<!-- slick js -->
+<script src="/assets/js/slick.min.js"></script>
+<!-- elevatezoom js -->
+<script src="/assets/js/jquery.elevatezoom.js"></script>
+<!-- scripts js -->
+<script src="/assets/js/scripts.js"></script>
+@RenderSection("scripts", required: false)
+<script>
+	function getbasketCoockie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+		}
+		return null;
+	}
+	$(document).ready(function () {
+		var cookie = getbasketCoockie('basket-babakshop');
+		if (cookie != null) {
+			var orderDetails = cookie.split('/');
+
+			$('.cart_count').html(orderDetails.length - 1);
+		} else {
+			$('.cart_count').html('0');
+		}
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Models.Product>
+
+@{
+ViewBag.Title = "Product List" ;
+    
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+        @(Html.Kendo().Grid(Model)
+              .Name("Grid")
+              .Columns(columns =>
+                  {
+        columns.Bound(model => model.ProductGroup.Title);
+        columns.Bound(model => model.Order);
+        columns.Bound(model => model.Title);
+				columns.Bound(model => model.ImageUrl).Template(@<text><img src="@item.ImageUrl" height="100px" /></text>);
+        columns.Bound(model => model.AmountStr);
+        columns.Bound(model => model.IsInPromotion);
+        columns.Bound(model => model.IsTopRate);
+        columns.Bound(model => model.IsBestSale);
+        columns.Bound(model => model.IsSpecialOffer);
+        columns.Bound(model => model.IsNewArrival);
+        columns.Bound(model => model.IsDealOfDay);
+        columns.Bound(model => model.Stock);
+        columns.Bound(model => model.IsActive);
+					columns.Bound(item => @item.Id).Title("Actions").Filterable(false).Groupable(false)
+							.Template(@<text>
+									@Html.ActionLink("Edit", "Edit", new {id = @item.Id}, new {@class = "k-button"})<br/>
+									@Html.ActionLink("Delete", "Delete", new { id = @item.Id }, new { @class = "k-button" })<br />
+								          @Html.ActionLink("Images", "Index", "ProductImages", new { id = @item.Id }, new { @class = "k-button" })<br />
+			 
+					@Html.ActionLink("productColors", "Indexcolor", new {id = @item.Id}, new {@class = "k-button"})
+
+			 
+			 
+									</text>);
+									})
+		.ToolBar(toolbar =>
+		{
+			 
+				toolbar.Custom().Action("Create", "Products").Text("Add");
+		 
+		}
+		)
+		.DataSource(dataSource => dataSource
+									.Server()
+
+									.Model(model => model.Id(item => item.Id))
+					)
+	)

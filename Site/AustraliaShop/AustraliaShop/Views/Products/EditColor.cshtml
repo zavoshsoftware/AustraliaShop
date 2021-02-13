@@ -1,0 +1,47 @@
+﻿@model ViewModels.ProductColorCrudViewModel
+
+@{
+    ViewBag.Title = "Edit ";
+    Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("EditColor", "Products",FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">        
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ProductId)
+
+	    <div class="form-group">
+		    @Html.LabelFor(model => model.ColorId, new { @class = "control-label col-md-2" })
+		    <div class="col-md-10">
+			    @Html.DropDownList("ColorId", String.Empty)
+			    @Html.ValidationMessageFor(model => model.ColorId)
+		    </div>
+	    </div>
+
+	    <div class="form-group">
+		    <div class="col-md-2">
+		    </div>
+		    <div class="col-md-10">
+			    @Html.EditorFor(model => model.IsActive)
+
+			    @Html.LabelFor(model => model.IsActive)
+			    @Html.ValidationMessageFor(model => model.IsActive)
+		    </div>
+	    </div>
+
+
+        <div class="form-group" id="buttons">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+				@Html.ActionLink("Return to list", "Index")
+            </div>
+        </div>
+    </div>
+}
+
