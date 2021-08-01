@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Models;
+using ViewModels;
 
 namespace AustraliaShop.Controllers
 {
@@ -29,28 +30,70 @@ namespace AustraliaShop.Controllers
         public ActionResult Create(Guid id)
         {
             ViewBag.ProductId = id;
-            ViewBag.SizeId = new SelectList(db.Sizes, "Id", "Title");
-            return View();
+           // ViewBag.SizeId = new SelectList(db.Sizes, "Id", "Title");
+
+            ProductSizeCreateViewModel result=new ProductSizeCreateViewModel()
+            {
+                Sizes = GetProductSizeLists()
+            };
+            return View(result);
+        }
+
+        public List<SizeCheckboxList> GetProductSizeLists( )
+        {
+            List<SizeCheckboxList> list = new List<SizeCheckboxList>();
+
+            List<Size> sizes = db.Sizes
+                .Where(c => c.IsDeleted == false && c.IsActive ).OrderBy(c => c.Title).ToList();
+
+            foreach (Size size in sizes)
+            {
+               
+
+                list.Add(new SizeCheckboxList()
+                {
+                    Id = size.Id,
+                    Title = size.Title,
+                    IsSelected = false
+                });
+            }
+
+            return list.OrderBy(c => c.Title).ToList();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ProductSize productSize, Guid id)
+        public ActionResult Create(ProductSizeCreateViewModel viewmodel, Guid id)
         {
             if (ModelState.IsValid)
             {
-				productSize.IsDeleted=false;
-				productSize.CreationDate= DateTime.Now;
-                productSize.ProductId = id;
-                productSize.Id = Guid.NewGuid();
-                db.ProductSizes.Add(productSize);
+                foreach (var size in viewmodel.Sizes)
+                {
+                    if (size.IsSelected)
+                    {
+                        ProductSize productSize = new ProductSize();
+
+                        productSize.SizeId = size.Id;
+                        productSize.Stock = viewmodel.Stock;
+                        productSize.IsDeleted = false;
+                        productSize.CreationDate = DateTime.Now;
+                        productSize.ProductId = id;
+                        productSize.IsActive = true;
+                        productSize.Id = Guid.NewGuid();
+                        db.ProductSizes.Add(productSize);
+                    }
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index",new{id=id});
             }
 
             ViewBag.ProductId = id;
-            ViewBag.SizeId = new SelectList(db.Sizes, "Id", "Title", productSize.SizeId);
-            return View(productSize);
+            ProductSizeCreateViewModel result = new ProductSizeCreateViewModel()
+            {
+                Sizes = GetProductSizeLists()
+            };
+            return View(result);
         }
 
         public ActionResult Edit(Guid? id)

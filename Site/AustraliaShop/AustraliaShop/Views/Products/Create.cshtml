@@ -87,6 +87,16 @@
             </div>
         </div>
 
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IrAmount, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                    @Html.EditorFor(model => model.IrAmount)
+
+                @Html.ValidationMessageFor(model => model.IrAmount)
+            </div>
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.DiscountAmount, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -218,6 +228,15 @@
             <div class="col-md-10">
                 @Html.DropDownList("ProductGroupId", String.Empty)
                 @Html.ValidationMessageFor(model => model.ProductGroupId)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SupplierId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("SupplierId", String.Empty)
+                @Html.ValidationMessageFor(model => model.SupplierId)
             </div>
         </div>
 

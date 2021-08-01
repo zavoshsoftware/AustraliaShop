@@ -17,10 +17,10 @@ namespace AustraliaShop.Controllers
             HomeViewModel home = new HomeViewModel()
             {
                 Sliders = db.Sliders.Where(c => c.IsDeleted == false && c.IsActive).OrderBy(c => c.Order).ToList(),
-                NewProducts = GetProductList("NewProducts").Take(3).ToList(),
-                BestSaleProducts = GetProductList("BestSaleProducts").Take(3).ToList(),
+                NewProducts = GetProductList("NewProducts"),
+                BestSaleProducts = GetProductList("BestSaleProducts"),
                 SpecialOfferProducts = GetProductList("SpecialOfferProducts"),
-                TopRatedProducts = GetProductList("TopRatedProducts").Take(3).ToList(),
+                TopRatedProducts = GetProductList("TopRatedProducts"),
                 DealOfDayProducts = GetDealOfDayProductList(),
                 ProductGroups = db.ProductGroups.Where(c=>c.IsInHome&&c.IsDeleted==false&&c.IsActive).Take(3).ToList()
             };
@@ -76,7 +76,7 @@ namespace AustraliaShop.Controllers
             if (typeTitle == "NewProducts")
             {
                 var products = db.Products.Where(c =>
-                    c.IsNewArrival && c.IsDeleted == false && c.IsActive).Select(c => new
+                    c.IsNewArrival&&c.ParentId==null && c.IsDeleted == false && c.IsActive).Select(c => new
                     {
                         c.Id,
                         c.Title,
@@ -87,7 +87,7 @@ namespace AustraliaShop.Controllers
                         c.Amount,
                         c.DiscountAmount,
                         c.DealOfDayExpireDate
-                    });
+                    }).Take(8);
 
 
                 foreach (var product in products)
@@ -107,10 +107,10 @@ namespace AustraliaShop.Controllers
                 }
             }
 
-            if (typeTitle == "BestSaleProducts")
+           else if (typeTitle == "BestSaleProducts")
             {
                 var products = db.Products.Where(c =>
-                    c.IsBestSale && c.IsDeleted == false && c.IsActive).Select(c => new
+                    c.IsBestSale && c.ParentId == null && c.IsDeleted == false && c.IsActive).Select(c => new
                     {
                         c.Id,
                         c.Title,
@@ -120,7 +120,7 @@ namespace AustraliaShop.Controllers
                         c.Summery,
                         c.Amount,
                         c.DiscountAmount
-                    });
+                    }).Take(8);
 
 
                 foreach (var product in products)
@@ -140,10 +140,10 @@ namespace AustraliaShop.Controllers
                     });
                 }
             }
-            if (typeTitle == "SpecialOfferProducts")
+            else if (typeTitle == "SpecialOfferProducts")
             {
                 var products = db.Products.Where(c =>
-                    c.IsSpecialOffer && c.IsDeleted == false && c.IsActive).Select(c => new
+                    c.IsSpecialOffer && c.ParentId == null && c.IsDeleted == false && c.IsActive).Select(c => new
                     {
                         c.Id,
                         c.Title,
@@ -153,7 +153,7 @@ namespace AustraliaShop.Controllers
                         c.Summery,
                         c.Amount,
                         c.DiscountAmount
-                    });
+                    }).Take(8);
 
 
                 foreach (var product in products)
@@ -174,10 +174,10 @@ namespace AustraliaShop.Controllers
                 }
             }
 
-            if (typeTitle == "TopRatedProducts")
+            else if (typeTitle == "TopRatedProducts")
             {
                 var products = db.Products.Where(c =>
-                    c.IsTopRate && c.IsDeleted == false && c.IsActive).Select(c => new
+                    c.IsTopRate && c.ParentId == null && c.IsDeleted == false && c.IsActive).Select(c => new
                     {
                         c.Id,
                         c.Title,
@@ -187,7 +187,7 @@ namespace AustraliaShop.Controllers
                         c.Summery,
                         c.Amount,
                         c.DiscountAmount
-                    });
+                    }).Take(8);
 
 
                 foreach (var product in products)

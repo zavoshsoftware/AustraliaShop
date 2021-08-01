@@ -40,5 +40,6 @@ namespace Models
         public System.Data.Entity.DbSet<Models.Size> Sizes { get; set; }
 
         public System.Data.Entity.DbSet<Models.Color> Colors { get; set; }
+        public System.Data.Entity.DbSet<Models.Supplier> Suppliers { get; set; }
     }
 }

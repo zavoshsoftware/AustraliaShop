@@ -1,4 +1,4 @@
-﻿@model Models.ProductImage
+﻿@model Models.Supplier
 
 @{
     ViewBag.Title = "Add " + Server.HtmlDecode(Html.DisplayNameFor(model => model).ToString());
@@ -7,7 +7,7 @@
 
 <h2>Add @Html.DisplayNameFor(model => model)</h2>
 
-@using (Html.BeginForm("Create", "ProductImages",FormMethod.Post, new { enctype = "multipart/form-data" })) 
+@using (Html.BeginForm("Create", "Suppliers",FormMethod.Post, new { enctype = "multipart/form-data" })) 
 {
     @Html.AntiForgeryToken()
     
@@ -16,28 +16,11 @@
 
         <div class="form-group">
         <div class="form-group">
-            @Html.LabelFor(model => model.Order, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                    @Html.EditorFor(model => model.Order)
+                    @Html.EditorFor(model => model.Title)
 
-                @Html.ValidationMessageFor(model => model.Order)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ImageUrl, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                    @Html.Kendo().Upload().Name("fileUploadResultAttachment").Multiple(true)
-                @Html.ValidationMessageFor(model => model.ImageUrl)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.AltText, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                    @Html.EditorFor(model => model.AltText)
-
-                @Html.ValidationMessageFor(model => model.AltText)
+                @Html.ValidationMessageFor(model => model.Title)
             </div>
         </div>
 

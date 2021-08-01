@@ -41,6 +41,7 @@ namespace AustraliaShop.Controllers
         {
             ViewBag.ColorId = new SelectList(db.Colors.Where(c => c.IsDeleted == false).OrderBy(c => c.Title), "Id", "Title");
             ViewBag.ParentId = new SelectList(db.Products.Where(c => c.ParentId == null), "Id", "Title");
+            ViewBag.SupplierId = new SelectList(db.Suppliers.Where(c => c.IsDeleted == false), "Id", "Title");
 
             return View();
         }
@@ -53,7 +54,7 @@ namespace AustraliaShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (db.Products.Any(c => c.ParentId == id && c.ColorId == productColor.ColorId&&c.IsDeleted==false))
+                if (db.Products.Any(c => c.ParentId == id && c.ColorId == productColor.ColorId && c.IsDeleted == false))
                 {
                     ModelState.AddModelError("duplicate", "this color submited for this product previously");
 
@@ -112,6 +113,7 @@ namespace AustraliaShop.Controllers
         {
             ViewBag.ProductGroupId = new SelectList(db.ProductGroups, "Id", "Title");
             ViewBag.ColorId = new SelectList(db.Colors.Where(c => c.IsDeleted == false).OrderBy(c => c.Title), "Id", "Title");
+            ViewBag.SupplierId = new SelectList(db.Suppliers.Where(c => c.IsDeleted == false), "Id", "Title");
 
             return View();
         }
@@ -152,6 +154,7 @@ namespace AustraliaShop.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.ColorId = new SelectList(db.Colors.Where(c => c.IsDeleted == false).OrderBy(c => c.Title), "Id", "Title");
+            ViewBag.SupplierId = new SelectList(db.Suppliers.Where(c => c.IsDeleted == false), "Id", "Title");
 
             ViewBag.ProductGroupId = new SelectList(db.ProductGroups, "Id", "Title", product.ProductGroupId);
             return View(product);
@@ -210,6 +213,7 @@ namespace AustraliaShop.Controllers
                 return HttpNotFound();
             }
             ViewBag.ProductGroupId = new SelectList(db.ProductGroups, "Id", "Title", product.ProductGroupId);
+            ViewBag.SupplierId = new SelectList(db.Suppliers.Where(c => c.IsDeleted == false), "Id", "Title", product.SupplierId);
             return View(product);
         }
 
@@ -239,6 +243,7 @@ namespace AustraliaShop.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.SupplierId = new SelectList(db.Suppliers.Where(c => c.IsDeleted == false), "Id", "Title", product.SupplierId);
             ViewBag.ProductGroupId = new SelectList(db.ProductGroups, "Id", "Title", product.ProductGroupId);
             return View(product);
         }
@@ -295,6 +300,7 @@ namespace AustraliaShop.Controllers
             if (productGroup == null)
                 return Redirect("/");
 
+
             //ViewBag.url = GetUrl(brands, urlParam);
 
             if (pageId == null)
@@ -311,8 +317,9 @@ namespace AustraliaShop.Controllers
                      c.IsInPromotion,
                      c.Summery,
                      c.Amount,
-                     c.DiscountAmount
-                 });
+                     c.DiscountAmount,
+                     c.CreationDate
+                 }).OrderByDescending(c => c.CreationDate);
 
             List<ProductItemViewModel> productList = new List<ProductItemViewModel>();
 
@@ -341,7 +348,7 @@ namespace AustraliaShop.Controllers
             ProductListViewModel result = new ProductListViewModel()
             {
                 ProductGroup = productGroup,
-                Products = productList,
+                Products = productList.Skip(_productPagination * (pageId.Value - 1)).Take(_productPagination).ToList(),
                 BreadcrumbItems = productHelper.GetBreadCrumb(productGroup.Parent).OrderBy(c => c.Order).ToList(),
                 PageItems = productHelper.GetPagination(products.Count(), pageId),
             };
@@ -380,7 +387,7 @@ namespace AustraliaShop.Controllers
                         .Where(c => c.ProductId == product.Id && c.IsActive == true && c.IsDeleted == false)
                         .OrderByDescending(c => c.CreationDate).ToList(),
 
-                RelatedProducts = db.Products.Where(c => c.IsDeleted == false && c.IsActive)
+                RelatedProducts = db.Products.Where(c => c.ParentId == null && c.ProductGroupId == product.ProductGroupId && c.IsDeleted == false && c.IsActive)
                     .OrderByDescending(c => c.CreationDate).Take(6).ToList(),
 
                 ProductGroup = productGroup,
@@ -402,7 +409,7 @@ namespace AustraliaShop.Controllers
             foreach (var child in children)
             {
                 List<ProductSize> productSizes = db.ProductSizes.Where(c =>
-                    c.ProductId == child.Id && c.IsDeleted == false && c.IsActive && c.Stock > 0).ToList();
+                    c.ProductId == child.Id && c.IsDeleted == false && c.IsActive && c.Stock > 0).OrderBy(c => c.Size.Title).ToList();
 
                 if (productSizes.Any())
                 {

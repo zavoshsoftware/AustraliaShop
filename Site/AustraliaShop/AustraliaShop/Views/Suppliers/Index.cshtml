@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Models.Color>
+﻿@model IEnumerable<Models.Supplier>
 
 @{
-ViewBag.Title = "Color List ";
+ViewBag.Title = "List ";
     
     Layout = "~/Views/Shared/BackEndLayout/_BackEndLayout.cshtml";
 }
@@ -12,15 +12,9 @@ ViewBag.Title = "Color List ";
               .Name("Grid")
               .Columns(columns =>
                   {
-                        columns.Bound(model => model.Title);
-        columns.Bound(model => model.HexCode);
+                      columns.Bound(model => model.Title);
         columns.Bound(model => model.IsActive);
         columns.Bound(model => model.CreationDate);
-
-					columns.Bound(item => @item.Id).Title("color").Filterable(false).Groupable(false)
-							.Template(@<text>
-								          <span style="background-color: #@item.HexCode; height: 50px; width: 50px; display: block"></span>
-									</text>).Width(200);  
 					columns.Bound(item => @item.Id).Title("Actions").Filterable(false).Groupable(false)
 							.Template(@<text>
 									@Html.ActionLink("Edit", "Edit", new {id = @item.Id}, new {@class = "k-button"})
@@ -29,7 +23,7 @@ ViewBag.Title = "Color List ";
 		})
 		.ToolBar(toolbar =>
 					{				
-						toolbar.Custom().Action("Create","Colors").Text("Add");                          
+						toolbar.Custom().Action("Create","Suppliers").Text("Add");                          
 					}
 		)         
 		.DataSource(dataSource => dataSource

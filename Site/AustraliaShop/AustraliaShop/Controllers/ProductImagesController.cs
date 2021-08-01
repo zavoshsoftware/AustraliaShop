@@ -29,31 +29,52 @@ namespace AustraliaShop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ProductImage productImage, Guid id, HttpPostedFileBase fileupload)
+        public ActionResult Create(ProductImage productImage, Guid id, List<HttpPostedFileBase> fileUploadResultAttachment)
         {
             if (ModelState.IsValid)
             {
                 #region Upload and resize image if needed
-                string newFilenameUrl = string.Empty;
-                if (fileupload != null)
+              
+                 
+                if (fileUploadResultAttachment != null)
                 {
-                    string filename = Path.GetFileName(fileupload.FileName);
-                    string newFilename = Guid.NewGuid().ToString().Replace("-", string.Empty)
-                                         + Path.GetExtension(filename);
+                    foreach (HttpPostedFileBase t in fileUploadResultAttachment)
+                    {
+                        if (t != null)
+                        {
+                            string filename = Path.GetFileName(t.FileName);
+                            string newFilename = Guid.NewGuid().ToString().Replace("-", string.Empty)
+                                                 + Path.GetExtension(filename);
 
-                    newFilenameUrl = "/Uploads/ProductImage/" + newFilename;
-                    string physicalFilename = Server.MapPath(newFilenameUrl);
-                    fileupload.SaveAs(physicalFilename);
-                    productImage.ImageUrl = newFilenameUrl;
+                            string newFilenameUrl = "/Uploads/ProductImage/" + newFilename;
+                            string physicalFilename = Server.MapPath(newFilenameUrl);
+
+                            t.SaveAs(physicalFilename);
+
+                            ProductImage proimg = new ProductImage()
+                            {
+                                Id = Guid.NewGuid(),
+                                ImageUrl = newFilenameUrl,
+                                CreationDate = DateTime.Now,
+                                ProductId = id,
+                                IsActive = true,
+                                IsDeleted = false,
+                                Order = productImage.Order,
+                                AltText = productImage.AltText
+                                
+                            };
+                            db.ProductImages.Add(proimg);
+                        }
+                    }
                 }
                 #endregion
 
-                productImage.ProductId = id;
-                productImage.IsDeleted=false;
-				productImage.CreationDate= DateTime.Now; 
+    //            productImage.ProductId = id;
+    //            productImage.IsDeleted=false;
+				//productImage.CreationDate= DateTime.Now; 
 					
-                productImage.Id = Guid.NewGuid();
-                db.ProductImages.Add(productImage);
+    //            productImage.Id = Guid.NewGuid();
+    //            db.ProductImages.Add(productImage);
                 db.SaveChanges();
                 return RedirectToAction("Index",new{id=id});
             }

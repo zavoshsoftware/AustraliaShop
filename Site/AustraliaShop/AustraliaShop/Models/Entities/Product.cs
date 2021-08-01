@@ -58,8 +58,10 @@ namespace Models
         [UIHint("RichText")]
         public string Body { get; set; }
 
-        [Required(ErrorMessage = "لطفا {0} را وارد نمایید.")]
+        [Required()]
         public decimal Amount { get; set; }
+        [Display(Name = "Toman Amount")]
+        public decimal? IrAmount { get; set; }
 
         public decimal? DiscountAmount { get; set; }
 
@@ -102,6 +104,8 @@ namespace Models
 
         public Guid? ParentId { get; set; }
         public virtual Product Parent { get; set; }
+        public Guid? SupplierId { get; set; }
+        public virtual Supplier Supplier { get; set; }
 
         #region NotMapped
 
@@ -133,6 +137,7 @@ namespace Models
                 HasRequired(p => p.ProductGroup).WithMany(t => t.Products).HasForeignKey(p => p.ProductGroupId);
                 HasOptional(p => p.Color).WithMany(t => t.Products).HasForeignKey(p => p.ColorId);
                 HasOptional(p => p.Parent).WithMany(t => t.Products).HasForeignKey(p => p.ParentId);
+                HasOptional(p => p.Supplier).WithMany(t => t.Products).HasForeignKey(p => p.SupplierId);
             }
         }
     }

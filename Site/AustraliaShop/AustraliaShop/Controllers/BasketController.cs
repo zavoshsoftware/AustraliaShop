@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using eWAY.Rapid;
+using eWAY.Rapid.Enums;
+using eWAY.Rapid.Models;
 using Helpers;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -402,6 +406,7 @@ namespace AustraliaShop.Controllers
 
             checkOut.Countries = db.Countries.OrderBy(current => current.Title).ToList();
 
+        
 
             return View(checkOut);
 
@@ -498,7 +503,7 @@ namespace AustraliaShop.Controllers
 
                 db.SaveChanges();
 
-                string res = "paymentGateway";
+                string res = "ewaypayment/"+order.Id;
 
                 return Json(res, JsonRequestBehavior.AllowGet);
 

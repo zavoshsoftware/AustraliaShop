@@ -111,7 +111,7 @@
 										{
 											<div class="item">
 												<div class="product_wrap">
-													<div class="product_img">
+													<div>
 														<a href="/product/@product.Code">
 															<img src="@product.ImageUrl" alt="@product.Title">
 														</a>
@@ -154,7 +154,7 @@
 											{
 												<div class="item">
 													<div class="product_wrap">
-														<div class="product_img">
+														<div>
 															<a href="/product/@product.Code">
 																<img src="@product.ImageUrl" alt="@product.Title">
 															</a>
@@ -197,7 +197,7 @@
 											{
 												<div class="item">
 													<div class="product_wrap">
-														<div class="product_img">
+														<div>
 															<a href="/product/@product.Code">
 																<img src="@product.ImageUrl" alt="@product.Title">
 															</a>
@@ -257,7 +257,7 @@
 		</div>
 	</div>
 
-	<div class="section pt-0 pb-0">
+	@*<div class="section pt-0 pb-0">
 		<div class="custom-container">
 			<div class="row">
 				<div class="col-md-12">
@@ -305,7 +305,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>*@
 	
 
 	<div class="section pb_20 pt-4">
@@ -328,12 +328,12 @@
 							<div class="col-12">
 								<div class="product_slider carousel_slider product_list owl-carousel owl-theme nav_style5" data-nav="true" data-dots="false" data-loop="true" data-margin="20" data-responsive='{"0":{"items": "1"}, "380":{"items": "1"}, "640":{"items": "2"}, "991":{"items": "1"}}'>
 									<div class="item">
-										@foreach (var product in Model.NewProducts)
+										@foreach (var product in Model.NewProducts.Take(3))
 										{
 											
 									
 										<div class="product_wrap">
-											<div class="product_img">
+											<div >
 												<a href="/product/@product.Code">
 													<img src="@product.ImageUrl" alt="@product.Title">
 												</a>
@@ -386,12 +386,12 @@
 							<div class="col-12">
 								<div class="product_slider carousel_slider product_list owl-carousel owl-theme nav_style5" data-nav="true" data-dots="false" data-loop="true" data-margin="20" data-responsive='{"0":{"items": "1"}, "380":{"items": "1"}, "640":{"items": "2"}, "991":{"items": "1"}}'>
 									<div class="item">
-										@foreach (var product in Model.TopRatedProducts)
+										@foreach (var product in Model.TopRatedProducts.Take(3))
 										{
 											
 									
 											<div class="product_wrap">
-												<div class="product_img">
+												<div>
 													<a href="/product/@product.Code">
 														<img src="@product.ImageUrl" alt="@product.Title">
 													</a>
@@ -444,12 +444,12 @@
 							<div class="col-12">
 								<div class="product_slider carousel_slider product_list owl-carousel owl-theme nav_style5" data-nav="true" data-dots="false" data-loop="true" data-margin="20" data-responsive='{"0":{"items": "1"}, "380":{"items": "1"}, "640":{"items": "2"}, "991":{"items": "1"}}'>
 									<div class="item">
-										@foreach (var product in Model.BestSaleProducts)
+										@foreach (var product in Model.BestSaleProducts.Take(3))
 										{
 											
 									
 											<div class="product_wrap">
-												<div class="product_img">
+												<div>
 													<a href="/product/@product.Code">
 														<img src="@product.ImageUrl" alt="@product.Title">
 													</a>
@@ -488,9 +488,9 @@
 				</div>
 			</div>
 		</div>
-		<!-- END SECTION SHOP -->
-		<!-- START SECTION SUBSCRIBE NEWSLETTER -->
-		<div class="section bg_default small_pt small_pb">
+
+
+	<div class="section bg_default small_pt small_pb">
 			<div class="custom-container">
 				<div class="row align-items-center">
 					<div class="col-md-6">
@@ -510,7 +510,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- START SECTION SUBSCRIBE NEWSLETTER -->
 
 	</div>
  

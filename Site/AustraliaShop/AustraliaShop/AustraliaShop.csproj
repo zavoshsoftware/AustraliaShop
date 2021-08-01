@@ -44,11 +44,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="eWAY.Rapid, Version=1.6.2.0, Culture=neutral, PublicKeyToken=3ab6d5d95167133b, processorArchitecture=MSIL">
+      <HintPath>..\packages\eWAY.Rapid.1.6.2\lib\net45\eWAY.Rapid.dll</HintPath>
     </Reference>
     <Reference Include="Kendo.Mvc">
       <HintPath>..\lib\KENDOUIMVC\2017.3.913.545\Kendo.Mvc.dll</HintPath>
@@ -82,12 +88,13 @@
     <Reference Include="Microsoft.Owin.Security.OAuth, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -1062,6 +1069,7 @@
     <Compile Include="Controllers\DiscountCodesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\ProductCommentsController.cs" />
     <Compile Include="Controllers\ProductGroupsController.cs" />
     <Compile Include="Controllers\ProductImagesController.cs" />
@@ -1069,6 +1077,7 @@
     <Compile Include="Controllers\ProductSizesController.cs" />
     <Compile Include="Controllers\SizesController.cs" />
     <Compile Include="Controllers\SlidersController.cs" />
+    <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1121,6 +1130,14 @@
     <Compile Include="Migrations\202102100726093_V11.Designer.cs">
       <DependentUpon>202102100726093_V11.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202102250606288_V12.cs" />
+    <Compile Include="Migrations\202102250606288_V12.Designer.cs">
+      <DependentUpon>202102250606288_V12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102250845185_V13.cs" />
+    <Compile Include="Migrations\202102250845185_V13.Designer.cs">
+      <DependentUpon>202102250845185_V13.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DatabaseContext.cs" />
     <Compile Include="Models\DatabaseContextInitializer.cs" />
@@ -1145,6 +1162,7 @@
     <Compile Include="Models\Entities\Color.cs" />
     <Compile Include="Models\Entities\Size.cs" />
     <Compile Include="Models\Entities\Slider.cs" />
+    <Compile Include="Models\Entities\Supplier.cs" />
     <Compile Include="Models\Entities\TextItem.cs" />
     <Compile Include="Models\Entities\TextItemType.cs" />
     <Compile Include="Models\Entities\User.cs" />
@@ -1152,6 +1170,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BlogDetailViewModel.cs" />
     <Compile Include="ViewModels\BlogListViewModel.cs" />
+    <Compile Include="ViewModels\PaymentViewModel.cs" />
     <Compile Include="ViewModels\CheckBoxViewModel.cs" />
     <Compile Include="ViewModels\ContactViewModel.cs" />
     <Compile Include="ViewModels\CallBackViewModel.cs" />
@@ -1164,6 +1183,7 @@
     <Compile Include="ViewModels\ProductColorCrudViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailViewModel.cs" />
     <Compile Include="ViewModels\ProductListViewModel.cs" />
+    <Compile Include="ViewModels\ProductSizeCreateViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\_BaseViewModel.cs" />
   </ItemGroup>
@@ -1433,6 +1453,13 @@
     <Content Include="Views\Products\CreateColor.cshtml" />
     <Content Include="Views\Products\IndexColor.cshtml" />
     <Content Include="Views\Products\EditColor.cshtml" />
+    <Content Include="Views\Payments\Pay.cshtml" />
+    <Content Include="Views\Payments\Callback.cshtml" />
+    <Content Include="Views\Suppliers\Create.cshtml" />
+    <Content Include="Views\Suppliers\Delete.cshtml" />
+    <Content Include="Views\Suppliers\Edit.cshtml" />
+    <Content Include="Views\Suppliers\Index.cshtml" />
+    <Content Include="Views\Payments\EwayPayment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1481,6 +1508,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202102100726093_V11.resx">
       <DependentUpon>202102100726093_V11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102250606288_V12.resx">
+      <DependentUpon>202102250606288_V12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102250845185_V13.resx">
+      <DependentUpon>202102250845185_V13.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

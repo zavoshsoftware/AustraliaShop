@@ -99,20 +99,28 @@ function getCookie(name) {
 }
 
 function addToBasket(code, qty) {
-    if (qty === 'detail') {
-        qty = $('#basketQty').val();
-    }
+    var sizeCookie = getCookie('sizecookie');
 
-    $.ajax(
-        {
-            url: "/cart",
-            data: { code: code, qty: qty },
-            type: "Post"
-        }).done(function (result) {
+    if (sizeCookie === null) {
+        alert('please choose size');
+    } else {
+        
+
+        if (qty === 'detail') {
+            qty = $('#basketQty').val();
+        }
+
+        $.ajax(
+            {
+                url: "/cart",
+                data: { code: code, qty: qty },
+                type: "Post"
+            }).done(function(result) {
             if (result !== true) {
                 window.location = "/basket";
             }
         });
+    }
 }
 
 function DisappearButton() {
@@ -192,6 +200,9 @@ function finalizeOrder() {
                     deleteCookie("basket-babakshop");
                     deleteCookie("sizecookie");
                     deleteCookie("discount");
+                    $("form").unbind('submit').submit();
+
+
                     window.location = result;
                 } else {
                     $('#error-box').css('display', 'block');
@@ -212,6 +223,7 @@ function finalizeOrder() {
 
 }
 
+ 
 function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }

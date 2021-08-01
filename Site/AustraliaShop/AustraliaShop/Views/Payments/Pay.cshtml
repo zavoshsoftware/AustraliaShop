@@ -1,0 +1,36 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Pay</title>
+</head>
+<body>
+<div>
+	<form method="POST" action="@ViewBag.formUrl" id="payment_form">
+		<input type="hidden" name="EWAY_ACCESSCODE" value="@ViewBag.accessCode" />
+		<input type="hidden" name="EWAY_PAYMENTTYPE" value="Credit Card" />
+		Card Name: <input type="text" name="EWAY_CARDNAME" />
+		Card Number: <input type="text" name="EWAY_CARDNUMBER" />
+		Card Expiry Month: <input type="text" name="EWAY_CARDEXPIRYMONTH" />
+		Card Expiry Year: <input type="text" name="EWAY_CARDEXPIRYYEAR" />
+		Card Start Date: <input type="text" name="EWAY_CARDSTARTMONTH" />
+		Card Start Year: <input type="text" name="EWAY_CARDSTARTYEAR" />
+		Card Issue Number: <input type="text" name="EWAY_CARDISSUENUMBER" />
+		Card CVN: <input type="text" name="EWAY_CARDCVN" />
+		<input type="submit" value="Process" text="Process" />
+	</form> 
+	@*<script src="https://secure.ewaypayments.com/scripts/eCrypt.js"
+	        class="eway-paynow-button"
+	        data-publicapikey="epk-9C5DE206-102A-4E66-9120-9AA292F5665C"
+	        data-amount="1000"
+	        data-currency="AUD" >
+	</script>*@
+</div>
+</body>
+</html>

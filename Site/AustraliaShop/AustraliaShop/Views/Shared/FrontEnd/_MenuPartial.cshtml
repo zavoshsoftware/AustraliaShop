@@ -14,7 +14,7 @@
 				<div class="col-md-6">
 					<div class="text-center text-md-right">
 						<ul class="header_list">
-							<li><a href="wishlist.html"><i class="ti-heart"></i><span>Wishlist</span></a></li>
+							@*<li><a href="wishlist.html"><i class="ti-heart"></i><span>Wishlist</span></a></li>*@
 							@if (Model.IsAuthenticate)
 							{
 									<li><a href="/Account/LogOff"><i class="ti-user"></i><span>Sign out</span></a></li>
@@ -32,7 +32,7 @@
 	<div class="bottom_header dark_skin main_menu_uppercase">
 		<div class="container">
 			<nav class="navbar navbar-expand-lg">
-				<a class="navbar-brand" href="index.html">
+				<a class="navbar-brand" href="/">
 					<img class="logo_light" src="/assets/images/logo_light.png" alt="logo" />
 					<img class="logo_dark" src="/assets/images/logo_dark.png" alt="logo" />
 				</a>
@@ -41,9 +41,24 @@
 				</button>
 				<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
 					<ul class="navbar-nav">
-						<li><a class="nav-link  active" href="#">Home</a></li>
+						<li><a class="nav-link  active" href="/">Home</a></li>
+						
+					@foreach (var menu in Model.MenuItems)
+					{
+						<li class="dropdown">
+							<a data-toggle="dropdown" class="nav-link dropdown-toggle" href="#">@menu.ParentProductGroup.Title</a>
+							<div class="dropdown-menu">
+								<ul>
+									@foreach (var childProductGroup in menu.ChildProductGroups)
+									{
+										<li><a class="dropdown-item nav-link nav_item" href="/category/@childProductGroup.UrlParam">@childProductGroup.Title</a></li>
+									}
+								</ul>
+							</div>
+						</li>
+					}
 
-						<li class="dropdown dropdown-mega-menu">
+						@*<li class="dropdown dropdown-mega-menu">
 							<a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Products</a>
 							<div class="dropdown-menu">
 								<ul class="mega-menu d-lg-flex">
@@ -64,9 +79,9 @@
 								</ul>
 
 							</div>
-						</li>
+						</li>*@
 
-						<li><a class="nav-link nav_item" href="/blog">Blog</a></li>
+						@*<li><a class="nav-link nav_item" href="/blog">Blog</a></li>*@
 						<li><a class="nav-link nav_item" href="/about">About Us</a></li>
 						<li><a class="nav-link nav_item" href="/contact">Contact Us</a></li>
 					</ul>
