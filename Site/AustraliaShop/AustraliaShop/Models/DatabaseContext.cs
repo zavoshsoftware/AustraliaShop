@@ -41,5 +41,9 @@ namespace Models
 
         public System.Data.Entity.DbSet<Models.Color> Colors { get; set; }
         public System.Data.Entity.DbSet<Models.Supplier> Suppliers { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentType> PaymentTypes { get; set; }
+        public DbSet<CustomerType> CustomerTypes { get; set; }
+
     }
 }
