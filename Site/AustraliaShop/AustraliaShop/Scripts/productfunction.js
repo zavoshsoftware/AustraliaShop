@@ -100,8 +100,7 @@ function addProductToCookie(id, isDiscount) {
                 cookieItems[i] = id + "^" + qty + "^" + 0 + "^" + description;
                 isSetNewPro = true;
                 newcookie = newcookie + cookieItems[i] + "/";
-                //break;
-                alert(id);
+               
 
             } else {
                 newcookie = newcookie + cookieItems[i] + "/";
@@ -180,7 +179,7 @@ function getCookie(name) {
     return "";
 }
 
-function loadBasket(Title, quantity, amount, rowAmount, id, description) {
+function loadBasket(Title, quantity, amount, rowAmount, id, Description) {
   
     //var ddl = loadClorDropDown(childProducts, id);
 
@@ -193,7 +192,7 @@ function loadBasket(Title, quantity, amount, rowAmount, id, description) {
         //"<td class='qtytable'><input class='qty' type='text' value=" + quantity + " id='qty" + id + "' onKeyUp='return changeRowTotal(this.id,3)'  />" +
         "</td>" +
     /*    "<td id='discount" + id + "'>" + discount + "</td > " +*/
-        "<td id='description" + id + "'>" + description + "</td > " +
+        
         "<td id='amount" + id + "' class='amounttable'>" + amount +
         //"<td class='amounttable'><input type='text' value=" + amount + " id='amount" + id + "' onKeyUp='return changeRowTotal(this.id,6)'/>" +
         //"<td>" + amount +
@@ -202,6 +201,7 @@ function loadBasket(Title, quantity, amount, rowAmount, id, description) {
         "<td id='rowAmount" + id + "'>" +
         rowAmount +
         "</td> " +
+        "<td id='description" + id + "'>" + Description + "</td > " +
         "<td><i class='fa fa-remove' onclick=removeRow('" + id + "','PrintFactor'); />" +
         "</td>" +
         "<td ><input type='hidden' value=" + amount + " id='amountHidden" + id + "' />" +
@@ -225,7 +225,7 @@ function removeRow(id, viewName) {
                 if (viewName === "PrintFactor") {
                     item = item + loadBasket(data.Products[i].Title,
                         data.Products[i].Quantity, data.Products[i].Amount,
-                        data.Products[i].RowAmount, data.Products[i].Id);
+                        data.Products[i].RowAmount, data.Products[i].Id, data.Products[i].Description);
                 }
                 else if (viewName === "AddOrder") {
                     item = item + loadBasketWithoutAmont(data.Products[i].Title,
@@ -238,14 +238,20 @@ function removeRow(id, viewName) {
 
             $('#factor tbody').html(item);
             $('#total').html("sum total: " + data.Total);
+            var total = clearAmount(data.Total);
             var totalAmount = (data.Total).replace(" toman", "").replace(",", "");
-            //  $('#totalAmount').html(totalAmount);
-            document.getElementById('totalAmount').innerHTML = totalAmount;
-            //  $('#remainAmount').html(totalAmount);
-            document.getElementById('remainAmount').innerHTML = totalAmount;
+    /*        $('#totalAmount').html(totalAmount);*/
+            //document.getElementById('totalAmount').innerHTML = total
+            //    ;
+            //alert(total);
+            //alert(document.getElementById('totalAmount').innerHTML);
+            ///*              $('#remainAmount').html(totalAmount);*/
+            //document.getElementById('remainAmount').innerHTML = total;
             //$('#totalAmount').val(data.Total); 
+            $('#totalAmount').html(total);
+            $('#remainAmount').html(total);
 
-            //  changeTotalOrder();
+              changeTotalOrder();
         },
         error: function () {
             alert("Dynamic content load failed.");
@@ -325,7 +331,7 @@ function changeTotalOrder() {
     var decreasedAmount = $('#decreasedAmount').val();
     var decreasedAmountPercent = 0;
     var decreasedAmountPercentHidden = $('#decreasedAmountPercentHidden').val();
-
+ 
 
     var payment = $('#payment').val();
     if ($('#addedAmount').val().length === 0)
@@ -351,6 +357,9 @@ function changeTotalOrder() {
     payment = clearAmount(payment);
     payment = clearAmount(payment);
 
+    if (total.includes('sum'))
+        total = total.replace('sum total: ', '');
+
 
     //if (decreasedAmountPercentHidden != decreasedAmountPercent) {
     //    if ($('#decreasedAmountPercent').val().length > 0)
@@ -366,7 +375,9 @@ function changeTotalOrder() {
     //}
 
     var tot = parseInt(total) + parseInt(addedAmount) - parseInt(decreasedAmount);
+ 
     var remain = parseInt(tot) - parseInt(payment);
+
     $('#payment').val(commafy(payment));
     $('#decreasedAmount').val(commafy(decreasedAmount));
     $('#addedAmount').val(commafy(addedAmount));
@@ -375,8 +386,8 @@ function changeTotalOrder() {
 }
 
 function clearAmount(amount) {
-    if (amount.includes('تومان'))
-        amount = amount.replace('تومان', '');
+    if (amount.includes('toman'))
+        amount = amount.replace('toman', '');
 
     if (amount.includes(','))
         amount = amount.replace(',', '');
@@ -398,6 +409,7 @@ function commafy(num) {
 function clearForm() {
     $('#Order_DeliverCellNumber').val('');
     $('#Order_DeliverFullName').val('');
+    $('#product-list').html('');
     $('#Order_Address').val('');
     $('#addedAmount').val('0');
     $('#decreasedAmount').val('0');
@@ -408,11 +420,13 @@ function clearForm() {
     $('#CustomerTypeId').val('');
     $('#ProductGroupId').val('');
     $('#ProductId').val('');
-
+    $('#Order_AddressLine1').val('');
     $('#factor tbody').html('');
     $('#total').html('0');
     setCookie("basket", '');
-
+    $('#desc').val('');
+    $('#quantity').val('');
+    $('#description').val('');
     $('.panel-body input').css('border-color', '#d9d9d9');
 }
 
@@ -436,6 +450,7 @@ function finalizeOrder() {
         var totalAmount = $('#totalAmount').val();
         var customerTypeId = $('#CustomerTypeId').val();
         var paymentTypeIsRequired = null;
+        var file = '';
 
         if (paymentAmount === '0')
             paymentTypeIsRequired = "true";
@@ -444,7 +459,6 @@ function finalizeOrder() {
             paymentTypeIsRequired = "true";
 
         var img = getCookie('image');
-
         if (cellNumber && fullName && paymentTypeIsRequired && paymentTypeId && customerTypeId) {
             $.ajax({
                 type: "Post",
@@ -458,16 +472,16 @@ function finalizeOrder() {
                     "addedAmount": addedAmount,
                     "decreasedAmount": decreasedAmount,
                     "desc": desc,
-                    "paymentAmount": paymentAmount, "paymentTypeId": paymentTypeId, "customerTypeId": customerTypeId,
+                    "paymentAmount": paymentAmount, "paymentTypeId": paymentTypeId, "customerTypeId": customerTypeId,"file": file,
                     "subtotalAmount": subtotalAmount,
                     "totalAmount": totalAmount
                 },
                 success: function (data) {
                     if (data.includes("true")) {
-                        var orderCode = data.split('-')[1];
-                        var orderId = data.split('*')[1];
+                        var orderCode = data.split('*')[1];
+                        var orderId = data.split('*')[2];
                         $('#submit-succes').css('display', 'block');
-                        $('#submit-succes').html('فاکتور شماره ' + orderCode + ' با موفقیت ثبت گردید.');
+                        $('#submit-succes').html('factor with number ' + orderCode + ' register successfully.');
                         $('#submit-error').css('display', 'none');
                         clearForm();
                         $('#print-order').css('display', 'block');
@@ -478,7 +492,7 @@ function finalizeOrder() {
                     } else {
                         $('#submit-succes').css('display', 'none');
                         $('#submit-error').css('display', 'block');
-                        $('#submit-error').html('خطایی رخ داده است. لطفا دوباره تلاش کنید');
+                        $('#submit-error').html('error! try again');
 
                     }
 
@@ -486,7 +500,7 @@ function finalizeOrder() {
                 error: function () {
                     $('#submit-succes').css('display', 'none');
                     $('#submit-error').css('display', 'block');
-                    $('#submit-error').html('خطایی رخ داده است. لطفا دوباره تلاش کنید');
+                    $('#submit-error').html('error try again');
                 }
             });
 
@@ -494,9 +508,9 @@ function finalizeOrder() {
         } else {
             $('#submit-succes').css('display', 'none');
             $('#submit-error').css('display', 'block');
-            $('#submit-error').html('فیلدهای ستاره دار را تکمیل نمایید.');
+            $('#submit-error').html('fill star fields.');
             if (!paymentTypeIsRequired)
-                $('#submit-error').html('نوع پرداخت را مشخص کنید.');
+                $('#submit-error').html('select payment type.');
 
             if (cellNumber === '') {
                 $('#CellNumber').css('border-color', 'red');
@@ -514,7 +528,7 @@ function finalizeOrder() {
     } else {
         $('#submit-succes').css('display', 'none');
         $('#submit-error').css('display', 'block');
-        $('#submit-error').html('محصولی انتخاب نشده است.');
+        $('#submit-error').html('not selected product.');
     }
     unFreezePage();
 }

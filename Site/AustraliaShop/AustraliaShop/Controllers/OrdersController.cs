@@ -44,13 +44,31 @@ namespace AustraliaShop.Controllers
             }
             else
             {
-
-                orders = db.Orders.Include(o => o.Country).Where(o => o.IsDeleted == false)
+                if (TempData["pos"] == "pos")
+                {
+                    orders = db.Orders.Include(o => o.Country).Where(o => o.IsDeleted == false && o.IsPos)
+                   .OrderByDescending(o => o.CreationDate).Include(o => o.DiscountCode).Include(o => o.OrderStatus)
+                   .Include(o => o.User).ToList();
+                }
+                else
+                {
+                    orders = db.Orders.Include(o => o.Country).Where(o => o.IsDeleted == false)
                     .OrderByDescending(o => o.CreationDate).Include(o => o.DiscountCode).Include(o => o.OrderStatus)
                     .Include(o => o.User).ToList();
+                }
 
             }
             return View(orders);
+        }
+
+        public ActionResult Pos()
+        {
+            List<Order> orders = new List<Order>();
+
+
+            TempData["pos"] = "pos";
+
+            return RedirectToAction("Index");
         }
 
         // GET: OrderDetails/Details/5

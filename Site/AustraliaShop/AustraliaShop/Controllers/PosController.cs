@@ -349,7 +349,7 @@ namespace AustraliaShop.Controllers
             BasketViewModel basket = new BasketViewModel()
             {
                 Products = basketITems,
-                Total = totalAmount.ToString("n0") + " تومان"
+                Total = totalAmount.ToString("n0") + " toman"
             };
 
             return basket;
@@ -452,7 +452,7 @@ namespace AustraliaShop.Controllers
 
                 db.SaveChanges();
 
-                return Json("true-" + order.Code + "*" + order.Id, JsonRequestBehavior.AllowGet);
+                return Json("true*" + order.Code + "*" + order.Id, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
@@ -599,7 +599,8 @@ namespace AustraliaShop.Controllers
                 DeliverFullName = user.FullName,
                 CreationDate = DateTime.Now,
                 IsDeleted = false,
-                CustomerTypeId = customerTypeId
+                CustomerTypeId = customerTypeId,
+                OrderDate = DateTime.Now
             };
 
             if (remainAmountDecimal == 0)
@@ -665,7 +666,7 @@ namespace AustraliaShop.Controllers
                     OrderId = orderId,
                     ProductId = detail.ProductId,
                     Quantity = detail.Quantity,
-                    Amount = detail.RowAmount,
+                    Amount = detail.Amount,
                     IsActive = true,
                     IsDeleted = false,
                     CreationDate = DateTime.Now,
