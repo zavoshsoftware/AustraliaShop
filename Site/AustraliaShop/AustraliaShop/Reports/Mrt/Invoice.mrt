@@ -252,7 +252,7 @@
               <Name>Text23</Name>
               <Page isRef="4" />
               <Parent isRef="16" />
-              <Text>Address:{Invoice.City} - {Invoice.CustomerAddress}</Text>
+              <Text>Address:{Invoice.CustomerAddress}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,RightToLeft=True,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -379,7 +379,7 @@
           <Brush>Transparent</Brush>
           <BusinessObjectGuid>3ff5a302385b4c53acdeaa68745842f6</BusinessObjectGuid>
           <ClientRectangle>0,9.6,12.8,0.8</ClientRectangle>
-          <Components isList="true" count="6">
+          <Components isList="true" count="5">
             <DataProducts_ProductTitle Ref="29" type="Text" isKey="true">
               <Border>Left;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
@@ -402,7 +402,7 @@
               <Border>Left;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
-              <ClientRectangle>5.4,0,1.6,0.8</ClientRectangle>
+              <ClientRectangle>4.4,0,2.6,0.8</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Tahoma,11</Font>
               <HorAlignment>Center</HorAlignment>
@@ -452,25 +452,7 @@
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </DataProducts_RowAmount>
-            <Text20 Ref="33" type="Text" isKey="true">
-              <Border>Left;Black;1;Solid;False;4;Black</Border>
-              <Brush>Transparent</Brush>
-              <CanGrow>True</CanGrow>
-              <ClientRectangle>3.8,0,1.6,0.8</ClientRectangle>
-              <Conditions isList="true" count="0" />
-              <Font>Tahoma,11</Font>
-              <HorAlignment>Center</HorAlignment>
-              <Margins>0,0,0,0</Margins>
-              <Name>Text20</Name>
-              <Page isRef="4" />
-              <Parent isRef="28" />
-              <Text>{Invoice.Products.Discount}</Text>
-              <TextBrush>Black</TextBrush>
-              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
-              <Type>Expression</Type>
-              <VertAlignment>Center</VertAlignment>
-            </Text20>
-            <Text21 Ref="34" type="Text" isKey="true">
+            <Text21 Ref="33" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <CanGrow>True</CanGrow>
               <ClientRectangle>0,0,1.8,0.8</ClientRectangle>
@@ -496,12 +478,12 @@
           <Parent isRef="4" />
           <Sort isList="true" count="0" />
         </Data>
-        <FooterBand1 Ref="35" type="FooterBand" isKey="true">
+        <FooterBand1 Ref="34" type="FooterBand" isKey="true">
           <Border>All;Black;1;Solid;False;4;Black</Border>
           <Brush>Transparent</Brush>
           <ClientRectangle>0,11.2,12.8,2.4</ClientRectangle>
           <Components isList="true" count="6">
-            <Text5 Ref="36" type="Text" isKey="true">
+            <Text5 Ref="35" type="Text" isKey="true">
               <Border>Left, Right, Bottom;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0,1.4,5.4,0.6</ClientRectangle>
@@ -510,13 +492,13 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text5</Name>
               <Page isRef="4" />
-              <Parent isRef="35" />
+              <Parent isRef="34" />
               <Text>sum total:{Invoice.Total}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
               <Type>Expression</Type>
             </Text5>
-            <Text7 Ref="37" type="Text" isKey="true">
+            <Text7 Ref="36" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0,0,5.4,0.6</ClientRectangle>
@@ -525,13 +507,13 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text7</Name>
               <Page isRef="4" />
-              <Parent isRef="35" />
+              <Parent isRef="34" />
               <Text>Sum: {Invoice.SubTotal}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
               <Type>Expression</Type>
             </Text7>
-            <Text9 Ref="38" type="Text" isKey="true">
+            <Text9 Ref="37" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0,0.6,5.4,0.6</ClientRectangle>
@@ -540,13 +522,13 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text9</Name>
               <Page isRef="4" />
-              <Parent isRef="35" />
+              <Parent isRef="34" />
               <Text>shipment: {Invoice.Shipping}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
               <Type>Expression</Type>
             </Text9>
-            <Text12 Ref="39" type="Text" isKey="true">
+            <Text12 Ref="38" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <ClientRectangle>5.8,0,6.8,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
@@ -554,13 +536,13 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text12</Name>
               <Page isRef="4" />
-              <Parent isRef="35" />
+              <Parent isRef="34" />
               <Text>Payment status: {Invoice.PaymentType}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
               <Type>Expression</Type>
             </Text12>
-            <Text13 Ref="40" type="Text" isKey="true">
+            <Text13 Ref="39" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <ClientRectangle>5.6,1.4,7,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
@@ -568,13 +550,13 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text13</Name>
               <Page isRef="4" />
-              <Parent isRef="35" />
+              <Parent isRef="34" />
               <Text>Tracking Code: {Invoice.RefId}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
               <Type>Expression</Type>
             </Text13>
-            <Text14 Ref="41" type="Text" isKey="true">
+            <Text14 Ref="40" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <ClientRectangle>5.4,0.8,7.2,0.6</ClientRectangle>
               <Conditions isList="true" count="0" />
@@ -582,7 +564,7 @@
               <Margins>0,0,0,0</Margins>
               <Name>Text14</Name>
               <Page isRef="4" />
-              <Parent isRef="35" />
+              <Parent isRef="34" />
               <Text>Status: {Invoice.OrderStatus}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,RightToLeft=True,,,A=0</TextOptions>
@@ -616,10 +598,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>8/2/2021 3:19:22 PM</ReportChanged>
+  <ReportChanged>8/3/2021 11:25:07 AM</ReportChanged>
   <ReportCreated>12/5/2020 5:48:42 PM</ReportCreated>
   <ReportFile>f:\zavosh\zavoshsoftware\australiashop\site\australiashop\australiashop\reports\mrt\invoice.mrt</ReportFile>
-  <ReportGuid>43d1b9520d764f0c853fe1f3cfd391b7</ReportGuid>
+  <ReportGuid>272934cd1bd14572a8ec0c9fdfa2ce87</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Centimeters</ReportUnit>
   <ReportVersion>2020.4.2.0</ReportVersion>
