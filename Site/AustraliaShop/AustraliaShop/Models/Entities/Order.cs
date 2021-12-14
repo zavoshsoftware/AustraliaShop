@@ -21,7 +21,7 @@ namespace Models
 
         public Guid? UserId { get; set; }
 
-        public int CountryId { get; set; }
+        public int? CountryId { get; set; }
 
         public virtual Country  Country { get; set; }
         public string City { get; set; }
@@ -119,6 +119,12 @@ namespace Models
         public DateTime? PaymentDate { get; set; }
 
         public string PaymentTypeTitle { get; set; }
+        [Display(Name = "Register By Operator")]
+        public bool IsPos { get; set; }
+        public decimal AdditiveAmount { get; set; }
+        public decimal PaymentAmount { get; set; }
+        public decimal RemainAmount { get; set; }
+        public decimal DecreaseAmount { get; set; }
 
 
         //[Display(Name="نحوه پرداخت")]
@@ -139,7 +145,7 @@ namespace Models
         //}
 
 
-        
+
 
         [Display(Name= "Customer Description")]
         [DataType(DataType.MultilineText)]
@@ -149,6 +155,11 @@ namespace Models
         [DataType(DataType.MultilineText)]
         public string PaymentDesc { get; set; }
         public string State { get; set; }
+        public DateTime? OrderDate { get; set; }
+
+        [Display(Name = "Customer Type")]
+        public Guid? CustomerTypeId { get; set; }
+        public virtual CustomerType CustomerType { get; set; }
 
     }
 }

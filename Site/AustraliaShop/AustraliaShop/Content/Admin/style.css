@@ -137,3 +137,11 @@ textarea.multi-line {
     height: 160px;
 }
 
+#print-order {
+    display: none;
+}
+
+#factor-order {
+    display: none;
+}
+
